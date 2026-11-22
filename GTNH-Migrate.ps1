@@ -161,7 +161,24 @@ foreach ($col in @('迁移项目','目标当前值','迁移后')) {
     [void]$list.Columns.Add($col,150)
 }
 $list.Add_SizeChanged({ $list.Columns[0].Width = [Math]::Max(300,$list.ClientSize.Width-325) })
-$layout.Controls.Add($list, 0, 1)
+$tabs = [Windows.Forms.TabControl]::new()
+$tabs.Dock = 'Fill'
+$actionsPage = [Windows.Forms.TabPage]::new('可勾选迁移')
+$existingPage = [Windows.Forms.TabPage]::new('目标已有')
+$tabs.TabPages.Add($actionsPage)
+$tabs.TabPages.Add($existingPage)
+$actionsPage.Controls.Add($list)
+$existingList = [Windows.Forms.ListView]::new()
+$existingList.View = 'Details'
+$existingList.Dock = 'Fill'
+$existingList.FullRowSelect = $true
+$existingList.ShowItemToolTips = $true
+foreach ($label in '文件或目录','比较结果','处理方式') {
+    [void]$existingList.Columns.Add($label,150)
+}
+$existingList.Add_SizeChanged({ $existingList.Columns[0].Width = [Math]::Max(300,$existingList.ClientSize.Width-325) })
+$existingPage.Controls.Add($existingList)
+$layout.Controls.Add($tabs, 0, 1)
 
 $choices = @{}
 $snapshots = @{}
@@ -190,6 +207,7 @@ function Add-Choice($label, $value) {
     $row.ToolTipText = $label
     [void]$row.SubItems.Add([string]$current)
     [void]$row.SubItems.Add([string]$next)
+    $row.Tag = $value
     $index = $list.Items.Add($row).Index
     $choices[[int]$index] = $value
 }
@@ -210,9 +228,7 @@ function Add-Copy($relative) {
             $status = '文件与目录类型冲突'
         }
         $group = 'existing'
-        if ($null -eq $list.Groups[$group]) { [void]$list.Groups.Add($group,'目标已有 · 仅供比较') }
         $row = [Windows.Forms.ListViewItem]::new($relative)
-        $row.Group = $list.Groups[$group]
         $row.Tag = 'readonly'
         if ([IO.Directory]::Exists($source) -and [IO.Directory]::Exists($target)) {
             $row.Name = $relative
@@ -229,7 +245,7 @@ function Add-Copy($relative) {
         $row.ToolTipText = "$relative  $status"
         [void]$row.SubItems.Add($status)
         [void]$row.SubItems.Add('保留目标')
-        [void]$list.Items.Add($row)
+        [void]$existingList.Items.Add($row)
         return
     }
     Add-Choice "复制   $relative" ([pscustomobject]@{
@@ -237,9 +253,9 @@ function Add-Copy($relative) {
     })
 }
 
-$list.Add_DoubleClick({
-    if (!$list.SelectedItems.Count) { return }
-    $parentRow = $list.SelectedItems[0]
+$existingList.Add_DoubleClick({
+    if (!$existingList.SelectedItems.Count) { return }
+    $parentRow = $existingList.SelectedItems[0]
     $relative = $parentRow.Name
     if (!$relative) { return }
     $source = Join-Path $src $relative
@@ -537,12 +553,15 @@ $button.ForeColor = [Drawing.Color]::White
 $layout.Controls.Add($button, 0, 3)
 
 $button.Add_Click({
-    $indices = @($list.CheckedIndices)
-    if (!$indices.Count -and $shader.SelectedIndex -eq 0) { return }
+    $checkedRows = @(foreach ($row in $list.Items) { if ($row.Checked) { $row } })
+    if (!$checkedRows.Count -and $shader.SelectedIndex -eq 0) {
+        [void][Windows.Forms.MessageBox]::Show('请勾选要迁移的项目。','迁移清单为空')
+        return
+    }
     $failed = [Collections.Generic.List[string]]::new()
     $done = 0
-    $selected = @($indices | ForEach-Object { $choices[[int]$_] })
-    $preview = @($indices | ForEach-Object { $list.Items[[int]$_].ToolTipText })
+    $selected = @($checkedRows | ForEach-Object { $_.Tag })
+    $preview = @($checkedRows | ForEach-Object { $_.ToolTipText })
     try {
         $shaderName = $null
         $restorePacks = $null -ne $packOrderChoice -and $selected -contains $packOrderChoice
