@@ -53,6 +53,10 @@ $options.OutputAssembly = $exe
 $options.CompilerOptions = '/target:winexe /optimize+ /resource:"' + $source + '",MigrationScript'
 [void]$options.ReferencedAssemblies.Add('System.dll')
 [void]$options.ReferencedAssemblies.Add('System.Windows.Forms.dll')
+# GTNH-ICON: executable-v1
+$appIcon = Join-Path $PSScriptRoot 'assets\gtnh-app.ico'
+if (![IO.File]::Exists($appIcon)) { throw "Missing application icon: $appIcon" }
+$options.CompilerOptions += ' /win32icon:"' + $appIcon + '"'
 $compiler = [Microsoft.CSharp.CSharpCodeProvider]::new()
 try {
     $result = $compiler.CompileAssemblyFromSource($options, $launcher)
