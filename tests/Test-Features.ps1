@@ -42,6 +42,28 @@ try {
     $assets = @(Get-TranslationAssets $fixtures)
     if ($assets.Count -ne 2 -or $assets[0].Tag -ne '2.3.4') { throw 'Per-version archive selection failed.' }
 
+    $catalog = Read-TranslationCatalog
+    if (@(Get-TranslationAssets $catalog.releases).Count -lt 50) { throw 'Bundled version catalog is missing.' }
+    $receiver = (Get-Command Receive-TranslationFile).ScriptBlock
+    $saver = (Get-Command Save-TranslationCatalog).ScriptBlock
+    $requests = [Collections.Generic.List[string]]::new()
+    function Receive-TranslationFile($url,$path,$owner,$title,$seconds) {
+        $requests.Add($url)
+        if ($url -like 'https://api.github.com/*') { throw 'GitHub 请求受限（403/429）。' }
+        [IO.File]::WriteAllText($path,'<include-fragment src="https://github.com/Kiwi233/Translation-of-GTNH/releases/expanded_assets/v9.9.9"></include-fragment>')
+    }
+    function Save-TranslationCatalog($catalog) { }
+    try {
+        $fallback = Update-TranslationCatalog $catalog $null 1
+        if ($requests.Count -ne 2 -or $fallback.source -ne 'GitHub 发行页') { throw 'API 403 did not trigger web fallback.' }
+        if (@(Get-TranslationAssets $fallback.releases).Count -lt @(Get-TranslationAssets $catalog.releases).Count) { throw 'Web fallback lost cached assets.' }
+        $links = @(Get-TranslationPageAssets '<a href="/Kiwi233/Translation-of-GTNH/releases/download/v9.9.9/v9.9.9.7z">Download</a>' $null)
+        if ($links.Count -ne 1 -or $links[0].name -ne 'v9.9.9.7z') { throw 'Web attachment parsing failed.' }
+    } finally {
+        Set-Item Function:\Receive-TranslationFile $receiver
+        Set-Item Function:\Save-TranslationCatalog $saver
+    }
+
     Add-Type -AssemblyName System.IO.Compression.FileSystem
     $content = [IO.Directory]::CreateDirectory((Join-Path $root 'package/config/test')).FullName
     [IO.File]::WriteAllText((Join-Path $content 'zh_CN.lang'),'translated')

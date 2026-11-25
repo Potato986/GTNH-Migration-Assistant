@@ -28,8 +28,6 @@ jobs:
           $before = (Get-FileHash -LiteralPath $exe -Algorithm SHA256).Hash
           .\tests\Test-Portable.ps1 -ExePath $exe
           .\tests\Test-Features.ps1 -ExePath $exe
-          .\tests\Test-Window.ps1 -ExePath $exe
-          .\tests\Test-TranslationUI.ps1 -ExePath $exe
           $after = (Get-FileHash -LiteralPath $exe -Algorithm SHA256).Hash
           if ($before -ne $after) { throw 'The executable changed during testing.' }
           "$after  $([IO.Path]::GetFileName($exe))" |

@@ -48,8 +48,10 @@ $known=[Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnor
 $script:uiFlowState=@{Stage=0;Failure='';Details=$false}
 $driver=[Windows.Forms.Timer]::new()
 $driver.Interval=250
+$deadline=[Diagnostics.Stopwatch]::StartNew()
 $driver.Add_Tick({
     try {
+        if($deadline.Elapsed.TotalSeconds -gt 20){throw 'Window test exceeded 20 seconds.'}
         $windows=@([Windows.Forms.Application]::OpenForms)
         foreach($window in $windows){
             if(!$window.Visible -or !$window.BackgroundImage){continue}
