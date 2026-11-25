@@ -1,13 +1,18 @@
 ﻿$ErrorActionPreference = 'Stop'
 $main = Join-Path $PSScriptRoot 'GTNH-Migrate.ps1'
 $translation = Join-Path $PSScriptRoot 'Translation.ps1'
+$themes = Join-Path $PSScriptRoot 'Themes.ps1'
+$assetValues = foreach ($name in 'gtnh-app.ico','instance-scene.png','translation-scene.png','translation-catalog.json') {
+    "'" + $name + "'='" + [Convert]::ToBase64String([IO.File]::ReadAllBytes((Join-Path $PSScriptRoot ('assets/' + $name)))) + "'"
+}
+$assetCode = '$script:GtnhBundledAssets = @{' + ($assetValues -join ';') + '}'
 $dist = [IO.Directory]::CreateDirectory((Join-Path $PSScriptRoot 'dist')).FullName
 $source = Join-Path $dist 'GTNH-Migrate-bundled.ps1'
-[IO.File]::WriteAllText($source, ([IO.File]::ReadAllText($translation) + "`r`n" + [IO.File]::ReadAllText($main)), [Text.UTF8Encoding]::new($true))
+[IO.File]::WriteAllText($source, ($assetCode + "`r`n" + [IO.File]::ReadAllText($themes) + "`r`n" + [IO.File]::ReadAllText($translation) + "`r`n" + [IO.File]::ReadAllText($main)), [Text.UTF8Encoding]::new($true))
 $errors = $null
 [void][Management.Automation.Language.Parser]::ParseFile($source, [ref]$null, [ref]$errors)
 if ($errors.Count) { throw ($errors.Message -join "`n") }
-$exe = Join-Path $dist 'GTNH-Migration-Assistant-v0.2-Windows.exe'
+$exe = Join-Path $dist 'GTNH-Migration-Assistant-v0.3-Windows.exe'
 $launcher = @"
 using System;
 using System.IO;

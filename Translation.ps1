@@ -12,14 +12,16 @@ public sealed class GtnhDownload : IDisposable {
     public readonly CancellationTokenSource Cancel = new CancellationTokenSource();
     public long Bytes;
     public long Total;
+    public int StatusCode;
     public long LastActivity = DateTime.UtcNow.Ticks;
     public Task Work;
     public void Start(string url, string path) { Work = Download(url, path); }
     private async Task Download(string url, string path) {
         using (var client = new HttpClient()) {
             client.Timeout = Timeout.InfiniteTimeSpan;
-            client.DefaultRequestHeaders.UserAgent.ParseAdd("GTNH-Migration-Assistant/0.2");
+            client.DefaultRequestHeaders.UserAgent.ParseAdd("GTNH-Migration-Assistant/0.3");
             using (var response = await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, Cancel.Token).ConfigureAwait(false)) {
+                StatusCode = (int)response.StatusCode;
                 response.EnsureSuccessStatusCode();
                 Total = response.Content.Headers.ContentLength ?? 0;
                 using (var input = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
@@ -59,7 +61,7 @@ function Receive-TranslationFile($url, $path, $owner, $title, [int]$seconds = 60
     $transfer = [GtnhDownload]::new()
     $dialog = [Windows.Forms.Form]::new()
     $dialog.Text = $title
-    $dialog.ClientSize = [Drawing.Size]::new(460,110)
+    $dialog.ClientSize = [Drawing.Size]::new(660,265)
     $dialog.StartPosition = 'CenterParent'
     $dialog.ControlBox = $false
     $status = [Windows.Forms.Label]::new()
@@ -73,12 +75,16 @@ function Receive-TranslationFile($url, $path, $owner, $title, [int]$seconds = 60
     $dialog.CancelButton = $cancel
     $dialog.Controls.Add($status)
     $dialog.Controls.Add($cancel)
+    [void](Add-GtnhDialogHeader $dialog '下载汉化文件' $title)
+    Set-GtnhWindowTheme $dialog 'translation-scene.png'
     $state = @{ Reason = ''; Completed = $false }
     $clock = [Diagnostics.Stopwatch]::StartNew()
     $timer = [Windows.Forms.Timer]::new()
     $timer.Interval = 100
     $timer.Add_Tick({
-        $status.Text = '已接收 {0:N1} KB，可随时取消。' -f ($transfer.Bytes / 1024)
+        $status.Text = if ($transfer.Total -gt 0) {
+            '已接收 {0:N1} / {1:N1} KB。可点击取消或按 Esc。' -f ($transfer.Bytes / 1024),($transfer.Total / 1024)
+        } else { '已接收 {0:N1} KB，可点击取消或按 Esc。' -f ($transfer.Bytes / 1024) }
         $idle = ([DateTime]::UtcNow.Ticks - $transfer.LastActivity) / [TimeSpan]::TicksPerSecond
         if ($clock.Elapsed.TotalSeconds -ge $seconds -or $idle -ge 12) {
             $state.Reason = '网络连接超时，已跳过汉化。'
@@ -97,7 +103,12 @@ function Receive-TranslationFile($url, $path, $owner, $title, [int]$seconds = 60
             if (!$state.Reason) { $state.Reason = '已取消汉化下载。' }
             throw $state.Reason
         }
-        [void]$transfer.Work.GetAwaiter().GetResult()
+        try { [void]$transfer.Work.GetAwaiter().GetResult() }
+        catch {
+            if ($transfer.StatusCode -in 403,429) { throw 'GitHub 请求受限（403/429）。可使用已有版本列表，或打开下载页稍后重试。' }
+            if ($transfer.StatusCode -eq 404) { throw '此版本文件已被上游移除，请刷新列表或打开下载页。' }
+            throw '无法连接 GitHub 或下载被中断，请检查网络后重试。'
+        }
     } finally {
         $timer.Stop()
         $timer.Dispose()
@@ -129,7 +140,7 @@ function Get-TranslationAssets($releases) {
 function Show-TranslationFailure($owner,$message,$url) {
     $notice = [Windows.Forms.Form]::new()
     $notice.Text = '汉化暂未安装'
-    $notice.ClientSize = [Drawing.Size]::new(540,175)
+    $notice.ClientSize = [Drawing.Size]::new(740,290)
     $notice.StartPosition = 'CenterParent'
     $label = [Windows.Forms.Label]::new()
     $label.Dock = 'Fill'
@@ -149,64 +160,245 @@ function Show-TranslationFailure($owner,$message,$url) {
     $notice.Controls.Add($label)
     $notice.Controls.Add($link)
     $notice.Controls.Add($ok)
+    [void](Add-GtnhDialogHeader $notice '汉化下载暂未完成' '可返回选择其他版本或手动下载')
+    Set-GtnhWindowTheme $notice 'translation-scene.png'
     try { [void]$notice.ShowDialog($owner) } finally { $notice.Dispose() }
 }
 
-function Select-TranslationAsset($owner) {
+function Read-TranslationCatalog {
+    $bundled = [Text.Encoding]::UTF8.GetString((Get-GtnhAssetBytes 'translation-catalog.json')) | ConvertFrom-Json
+    $cache = Join-Path $env:LOCALAPPDATA 'GTNH-Migration-Assistant/translation-catalog.json'
+    if ([IO.File]::Exists($cache)) {
+        try {
+            $stored = [IO.File]::ReadAllText($cache) | ConvertFrom-Json
+            if ([DateTime]$stored.fetchedAt -gt [DateTime]$bundled.fetchedAt -and $stored.releases) { return $stored }
+        } catch { }
+    }
+    return $bundled
+}
+
+function Save-TranslationCatalog($catalog) {
+    $dir = [IO.Directory]::CreateDirectory((Join-Path $env:LOCALAPPDATA 'GTNH-Migration-Assistant')).FullName
+    $path = Join-Path $dir 'translation-catalog.json'
+    $stage = $path + '.' + [guid]::NewGuid() + '.tmp'
+    try {
+        [IO.File]::WriteAllText($stage,($catalog | ConvertTo-Json -Depth 8),[Text.UTF8Encoding]::new($false))
+        if ([IO.File]::Exists($path)) { [IO.File]::Replace($stage,$path,[System.Management.Automation.Language.NullString]::Value) }
+        else { [IO.File]::Move($stage,$path) }
+    } finally { if ([IO.File]::Exists($stage)) { [IO.File]::Delete($stage) } }
+}
+
+function Get-TranslationPageReleases([string]$html) {
+    $prefix = 'https://github.com/Kiwi233/Translation-of-GTNH/releases/expanded_assets/'
+    $seen = [Collections.Generic.HashSet[string]]::new([StringComparer]::Ordinal)
+    foreach ($hit in [regex]::Matches($html,'(?i)src="([^"\s]*releases/expanded_assets/[^"\s]+)"')) {
+        $url = [Net.WebUtility]::HtmlDecode($hit.Groups[1].Value)
+        if ($url.StartsWith('/')) { $url = 'https://github.com' + $url }
+        if (!$url.StartsWith($prefix,[StringComparison]::Ordinal) -or !$seen.Add($url)) { continue }
+        $tag = [Uri]::UnescapeDataString($url.Substring($prefix.Length))
+        [pscustomobject]@{tag_name=$tag;html_url=('https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/' + [Uri]::EscapeDataString($tag));draft=$false;assets=@()}
+    }
+}
+
+function Get-TranslationPageAssets([string]$html,$release) {
+    $prefix = '/Kiwi233/Translation-of-GTNH/releases/download/'
+    $seen = [Collections.Generic.HashSet[string]]::new([StringComparer]::Ordinal)
+    foreach ($hit in [regex]::Matches($html,'(?i)href="([^"\s]+/releases/download/[^"\s]+)"')) {
+        $link = [Net.WebUtility]::HtmlDecode($hit.Groups[1].Value)
+        if (!$link.StartsWith($prefix,[StringComparison]::Ordinal)) { continue }
+        $name = [Uri]::UnescapeDataString(($link -split '/')[-1])
+        if ($name -notmatch '\.(7z|zip)$' -or !$seen.Add($link)) { continue }
+        [pscustomobject]@{name=$name;browser_download_url=('https://github.com'+$link);size=0;digest=''}
+    }
+}
+
+function Update-TranslationCatalog($catalog,$owner,[int]$page) {
+    $temp = Join-Path ([IO.Path]::GetTempPath()) ('gtnh-list-'+[guid]::NewGuid()+'.json')
+    try {
+        try {
+            Receive-TranslationFile ('https://api.github.com/repos/Kiwi233/Translation-of-GTNH/releases?per_page=100&page='+$page) $temp $owner '刷新汉化版本' 8
+            $incoming = @([IO.File]::ReadAllText($temp) | ConvertFrom-Json)
+            $sourceName = 'GitHub API'
+        } catch {
+            if ($_.Exception.Message -match '取消') { throw }
+            # Use an independent temp file because a canceled request may still release its handle.
+            $temp = Join-Path ([IO.Path]::GetTempPath()) ('gtnh-list-'+[guid]::NewGuid()+'.html')
+            Receive-TranslationFile ('https://github.com/Kiwi233/Translation-of-GTNH/releases?page='+$page) $temp $owner '从发行页读取版本' 8
+            $incoming = @(Get-TranslationPageReleases ([IO.File]::ReadAllText($temp)))
+            $sourceName = 'GitHub 发行页'
+        }
+        if (!$incoming.Count) { throw '此页未找到更多版本，可以继续使用现有列表。' }
+        $map = @{}
+        foreach ($release in $catalog.releases) { $map[$release.tag_name] = $release }
+        foreach ($release in $incoming) {
+            if (!$release.assets.Count -and $map.ContainsKey($release.tag_name)) { continue }
+            $map[$release.tag_name] = $release
+        }
+        $ordered = [Collections.Generic.List[object]]::new()
+        $seen = [Collections.Generic.HashSet[string]]::new([StringComparer]::Ordinal)
+        foreach ($release in @($incoming)+@($catalog.releases)) {
+            if ($seen.Add([string]$release.tag_name)) { $ordered.Add($map[$release.tag_name]) }
+        }
+        $updated = [pscustomobject]@{ fetchedAt=[DateTime]::UtcNow.ToString('o');releases=@($ordered.ToArray());source=$sourceName }
+        try { Save-TranslationCatalog $updated } catch { }
+        return $updated
+    } finally { if ([IO.File]::Exists($temp)) { try {[IO.File]::Delete($temp)} catch [IO.IOException] {} } }
+}
+
+function Show-TranslationDetails($asset,$target,$owner) {
+    $details = [Windows.Forms.Form]::new()
+    $details.Text = '汉化下载和安装'
+    $details.ClientSize = [Drawing.Size]::new(820,360)
+    $details.StartPosition = 'CenterParent'
+    $description = [Windows.Forms.Label]::new()
+    $description.Dock = 'Fill'
+    $description.Padding = [Windows.Forms.Padding]::new(16)
+    $description.Text = "$($asset.Label)`r`n`r`n目标目录`r`n$target`r`n`r`n覆盖前备份原文件。完整包（complete）还会覆盖 scripts。"
+    $bar = [Windows.Forms.FlowLayoutPanel]::new()
+    $bar.Dock = 'Bottom'
+    $install = [Windows.Forms.Button]::new()
+    $install.Text = '下载并安装'
+    $install.AutoSize = $true
+    $queue = [Windows.Forms.Button]::new()
+    $queue.Text = '加入迁移清单'
+    $queue.AutoSize = $true
+    $link = [Windows.Forms.LinkLabel]::new()
+    $link.Text = '打开下载页'
+    $link.AutoSize = $true
+    $link.Margin = [Windows.Forms.Padding]::new(8,12,0,0)
+    $link.Add_LinkClicked({ Start-Process $asset.Page })
+    $back = [Windows.Forms.Button]::new()
+    $back.Text = '返回列表'
+    $back.DialogResult = 'Cancel'
+    $queue.Add_Click({ $details.Tag=$asset; $details.DialogResult='OK' })
+    $install.Add_Click({
+        if ([Windows.Forms.MessageBox]::Show($details,"安装 $($asset.Label)`r`n覆盖到 $target`r`n覆盖前自动备份。",'确认安装汉化','OKCancel') -ne 'OK') {return}
+        $install.Enabled=$false; $queue.Enabled=$false
+        try {
+            $result = Install-SelectedTranslation $asset $target $details
+            $description.Text = "$result`r`n`r`n已安装 $($asset.Label)"
+        } catch { Show-TranslationFailure $details $_.Exception.Message $asset.Page }
+        finally { $install.Enabled=$true; $queue.Enabled=$true }
+    })
+    $bar.Controls.AddRange(@($install,$queue,$back,$link))
+    $details.Controls.Add($description)
+    $details.Controls.Add($bar)
+    [void](Add-GtnhDialogHeader $details '汉化下载和安装' $asset.Tag)
+    Set-GtnhWindowTheme $details 'translation-scene.png'
+    $details.CancelButton=$back
+    $details.AcceptButton=$install
+    try { if ($details.ShowDialog($owner) -eq 'OK') {return $details.Tag} }
+    finally {$details.Dispose()}
+}
+
+function Select-TranslationAsset($owner,$target) {
     $picker = [Windows.Forms.Form]::new()
-    $picker.Text = '选择汉化版本和文件（确认迁移时下载）'
-    $picker.ClientSize = [Drawing.Size]::new(780,390)
+    $picker.Text = '汉化版本列表'
+    $picker.ClientSize = [Drawing.Size]::new(940,560)
     $picker.StartPosition = 'CenterParent'
     $help = [Windows.Forms.Label]::new()
     $help.Dock = 'Top'
     $help.Height = 46
     $help.Padding = [Windows.Forms.Padding]::new(8)
     $help.Text = '选择与目标整合包相符的版本。每日构建显示日期，完整包（complete）还会覆盖 scripts。'
-    $options = [Windows.Forms.ListBox]::new()
+    $options = [Windows.Forms.ListView]::new()
+    $options.Name = 'TranslationVersions'
+    $options.View = 'Details'
+    $options.MultiSelect = $false
+    [void]$options.Columns.Add('汉化版本',250)
+    [void]$options.Columns.Add('可下载文件',440)
+    [void]$options.Columns.Add('类型',170)
     $options.Dock = 'Fill'
-    $options.DisplayMember = 'Label'
-    $options.HorizontalScrollbar = $true
+    $filter = [Windows.Forms.TextBox]::new()
+    $filter.Name = 'TranslationSearch'
+    $filter.Dock = 'Top'
+    $filter.AccessibleName = '搜索汉化版本或文件名'
     $bar = [Windows.Forms.FlowLayoutPanel]::new()
     $bar.Dock = 'Bottom'
     $bar.Height = 40
     $load = [Windows.Forms.Button]::new()
-    $load.Text = '获取版本列表'
+    $load.Text = '刷新版本'
     $load.AutoSize = $true
     $choose = [Windows.Forms.Button]::new()
-    $choose.Text = '使用此版本'
+    $choose.Text = '查看并安装'
     $choose.AutoSize = $true
     $choose.Enabled = $false
     $bar.Controls.Add($load)
     $bar.Controls.Add($choose)
+    $more = [Windows.Forms.Button]::new()
+    $more.Text = '加载更多版本'
+    $more.AutoSize = $true
+    $bar.Controls.Add($more)
+    $close = [Windows.Forms.Button]::new()
+    $close.Text = '返回迁移'
+    $close.DialogResult = 'Cancel'
+    $bar.Controls.Add($close)
     $picker.Controls.Add($options)
     $picker.Controls.Add($help)
+    $picker.Controls.Add($filter)
     $picker.Controls.Add($bar)
-    $state = @{ Page = 1 }
-    $options.Add_SelectedIndexChanged({ $choose.Enabled = $options.SelectedIndex -ge 0 })
-    $choose.Add_Click({ $picker.Tag = $options.SelectedItem; $picker.DialogResult = 'OK' })
-    $load.Add_Click({
-        $cache = Join-Path ([IO.Path]::GetTempPath()) ('gtnh-releases-' + [guid]::NewGuid() + '.json')
-        $load.Enabled = $false
+    $state = @{ Page=1; Catalog=Read-TranslationCatalog }
+    $render = {
+        $options.BeginUpdate()
         try {
-            $api = 'https://api.github.com/repos/Kiwi233/Translation-of-GTNH/releases?per_page=100&page=' + $state.Page
-            Receive-TranslationFile $api $cache $picker '读取汉化版本列表' 20
-            $releases = @([IO.File]::ReadAllText($cache) | ConvertFrom-Json)
-            foreach ($asset in Get-TranslationAssets $releases) { [void]$options.Items.Add($asset) }
-            $state.Page++
-            $load.Text = if ($releases.Count -lt 100) { '已加载所有版本' } else { '加载更多版本' }
-            $load.Enabled = $releases.Count -ge 100
-        } catch {
-            Show-TranslationFailure $picker $_.Exception.Message 'https://github.com/Kiwi233/Translation-of-GTNH/releases'
-            $load.Text = '重试获取版本'
-            $load.Enabled = $true
-        } finally {
-            if ([IO.File]::Exists($cache)) {
-                try { [IO.File]::Delete($cache) } catch [IO.IOException] { }
+            $options.Items.Clear()
+            $search=$filter.Text.Trim()
+            foreach ($release in $state.Catalog.releases) {
+                if ($release.draft) { continue }
+                $assets=@(Get-TranslationAssets @($release))
+                if (!$assets.Count -and !$release.assets.Count) { $assets=@([pscustomobject]@{Tag=$release.tag_name;Name='查看此版本的下载文件';Url='';Page=$release.html_url;Release=$release}) }
+                foreach ($asset in $assets) {
+                    if ($search -and ($asset.Tag+' '+$asset.Name).IndexOf($search,[StringComparison]::OrdinalIgnoreCase) -lt 0) {continue}
+                    $row=[Windows.Forms.ListViewItem]::new([string]$asset.Tag)
+                    [void]$row.SubItems.Add($asset.Name)
+                    $kind=if($asset.Tag -like '*nightly*'){'每日构建'}elseif($asset.Name -like '*complete*'){'完整包（含脚本）'}else{'版本汉化'}
+                    [void]$row.SubItems.Add($kind)
+                    $row.Tag=$asset
+                    [void]$options.Items.Add($row)
+                }
             }
+            $date=([DateTime]$state.Catalog.fetchedAt).ToLocalTime().ToString('yyyy-MM-dd HH:mm')
+            $help.Text="搜索版本号或文件名。目录更新于 $date，共 $($options.Items.Count) 个文件。选中后查看并安装。"
+            $choose.Enabled=$false
+        } finally {$options.EndUpdate()}
+    }
+    $filter.Add_TextChanged($render)
+    $options.Add_SelectedIndexChanged({$choose.Enabled=$options.SelectedItems.Count -eq 1})
+    $choose.Add_Click({
+        if (!$options.SelectedItems.Count) {return}
+        $asset=$options.SelectedItems[0].Tag
+        if (!$asset.Url) {
+            $temp=Join-Path ([IO.Path]::GetTempPath()) ('gtnh-assets-'+[guid]::NewGuid()+'.html')
+            try {
+                $url='https://github.com/Kiwi233/Translation-of-GTNH/releases/expanded_assets/'+[Uri]::EscapeDataString($asset.Tag)
+                Receive-TranslationFile $url $temp $picker '读取版本下载文件' 12
+                $asset.Release.assets=@(Get-TranslationPageAssets ([IO.File]::ReadAllText($temp)) $asset.Release)
+                try {Save-TranslationCatalog $state.Catalog} catch {}
+                & $render
+            } catch {Show-TranslationFailure $picker $_.Exception.Message $asset.Page}
+            finally {if([IO.File]::Exists($temp)){try{[IO.File]::Delete($temp)} catch [IO.IOException] {}}}
+            return
         }
+        $chosen=Show-TranslationDetails $asset $target $picker
+        if ($chosen) {$picker.Tag=$chosen; $picker.DialogResult='OK'}
     })
+    $options.Add_DoubleClick({$choose.PerformClick()})
+    $refresh = {
+        $load.Enabled=$false; $more.Enabled=$false
+        try {
+            $state.Catalog=Update-TranslationCatalog $state.Catalog $picker $state.Page
+            & $render
+        } catch {
+            $help.Text=$_.Exception.Message+' 已保留当前版本列表。'
+        } finally {$load.Enabled=$true; $more.Enabled=$true}
+    }
+    $load.Add_Click({$state.Page=1; & $refresh})
+    $more.Add_Click({$state.Page++; & $refresh})
+    & $render
+    [void](Add-GtnhDialogHeader $picker '选择汉化版本' '搜索 → 查看文件 → 下载并安装，或加入本次迁移清单')
+    Set-GtnhWindowTheme $picker 'translation-scene.png'
     $picker.AcceptButton = $choose
-    $picker.Add_Shown({ $load.PerformClick() })
+    $picker.CancelButton = $close
     try { if ($picker.ShowDialog($owner) -eq 'OK') { return $picker.Tag } }
     finally { $picker.Dispose() }
 }
@@ -314,7 +506,7 @@ function Install-SelectedTranslation($asset,$target,$owner) {
     $archive = Join-Path ([IO.Path]::GetTempPath()) ('gtnh-translation-' + [guid]::NewGuid() + [IO.Path]::GetExtension($asset.Name))
     try {
         Receive-TranslationFile $asset.Url $archive $owner ('下载汉化 ' + $asset.Tag) 60
-        if ((Get-Item -LiteralPath $archive).Length -ne $asset.Size) { throw '汉化文件下载不完整。' }
+        if ($asset.Size -gt 0 -and (Get-Item -LiteralPath $archive).Length -ne $asset.Size) { throw '汉化文件下载不完整。' }
         if ($asset.Digest -match '^sha256:([0-9a-fA-F]{64})$' -and (Get-FileHash -LiteralPath $archive).Hash -ine $matches[1]) {
             throw '汉化文件 SHA-256 校验失败。'
         }

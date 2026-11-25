@@ -1,15 +1,17 @@
-[下载 Windows 单文件 EXE](https://github.com/Potato986/GTNH-Migration-Assistant/releases/download/v0.2/GTNH-Migration-Assistant-v0.2-Windows.exe)
+[下载 Windows 单文件 EXE](https://github.com/Potato986/GTNH-Migration-Assistant/releases/download/v0.3/GTNH-Migration-Assistant-v0.3-Windows.exe)
 
 双击运行，选择旧实例与新实例，勾选项目并预览后即可迁移。
 
-- 新增汉化版本选择，可浏览 Kiwi233/Translation-of-GTNH 的发布版本和每日构建，选择具体压缩包。
-- 确认迁移时下载汉化并覆盖到目标游戏目录，覆盖前备份原文件并校验安装结果。
-- 查询和下载支持取消与超时。网络异常时跳过汉化、提供手动下载页，其他迁移项可以完成。
-- 自动发现常见启动器目录里的 GTNH 实例，也可搜索所有本地磁盘或手动选择。
-- 目标尚未生成 options.txt 时，第一次就能选择迁移快捷键和游戏设置。
+- 统一实例选择、迁移主界面、汉化列表和下载窗口的字体、深色标题栏、绿色按钮和 GTNH 背景。实例页使用工厂图，汉化页使用高塔图。
+- 汉化列表首次打开就显示随应用提供的版本目录，可搜索版本号和文件名，区分每日构建、版本汉化和完整包。
+- 选中汉化后进入详情，可直接“下载并安装”，也可“加入迁移清单”与存档一起安装。覆盖前确认目标目录并备份原文件。
+- 修复 API 限流时版本列表为空的问题。刷新支持发行网页备用读取和本地缓存，刷新失败仍可使用已有列表。
+- 下载遇到 403、404 或连接中断时提供简明提示和上游下载页，可取消并继续迁移其他项目。
 
-汉化来自 [Translation-of-GTNH](https://github.com/Kiwi233/Translation-of-GTNH/releases)。请选择与目标整合包相符的版本，旧版完整包会覆盖 scripts。特定老版本的清理和任务书重载要求，请参阅汉化包内的使用说明。
+汉化来自 [Translation-of-GTNH](https://github.com/Kiwi233/Translation-of-GTNH/releases)。首启目录快照更新于 2026-11-25，可点击“刷新版本”获取后续发布。请选择与目标整合包相符的版本，旧版完整包会覆盖 scripts。特定老版本的清理和任务书重载要求，请参阅汉化包内的使用说明。
 
 汉化备份位于目标目录的 `.gtnh-translation-backup-*` 文件夹，其中 `original` 保存覆盖前的文件，`files.json` 记录本次安装清单。安装中途失败会尝试恢复本次改动。
 
-自动化验收覆盖复制校验、配置备份恢复、首次设置迁移、GTNH 识别、汉化文件安装与备份、非法路径拦截和网络取消。另使用上游每日构建 7z 在临时实例验证了 923 个文件的安装。本版本延续现有 WinForms 界面。
+Windows PowerShell 5.1 下验证了首次目录显示、搜索、列表进入详情、加入迁移清单、直接安装按钮、取消预览、超时及取消下载。模拟 API 403 后验证发行网页备用读取会保留已有目录。真实下载每日构建，在临时实例安装并校验了 923 个文件。构建工作流继续运行文件复制、配置备份恢复和汉化失败恢复测试。
+
+网页备用读取仍需要访问 GitHub。尚未覆盖所有 Windows 显示缩放比例和网络环境的人工验收。

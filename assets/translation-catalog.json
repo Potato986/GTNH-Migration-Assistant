@@ -1,0 +1,1282 @@
+{
+  "fetchedAt": "2026-11-25T08:47:21.5217347Z",
+  "releases": [
+    {
+      "tag_name": "0-nightly-build/2026-11-25",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/0-nightly-build/2026-11-25",
+      "draft": false,
+      "assets": [
+        {
+          "name": "nightly-2026-11-25.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/0-nightly-build/2026-11-25/nightly-2026-11-25.7z",
+          "size": 2065985,
+          "digest": "sha256:451ce51c030531e51a48eb6b351f57a802b9cb8cd7399d957716037d0946de37"
+        }
+      ]
+    },
+    {
+      "tag_name": "0-nightly-build/2026-11-24",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/0-nightly-build/2026-11-24",
+      "draft": false,
+      "assets": [
+        {
+          "name": "nightly-2026-11-24.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/0-nightly-build/2026-11-24/nightly-2026-11-24.7z",
+          "size": 2065995,
+          "digest": "sha256:53be47dc15f522e6019a1da74e9ca446f939df39752b3303e7c29e0d4d5c36aa"
+        }
+      ]
+    },
+    {
+      "tag_name": "0-nightly-build/2026-11-23",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/0-nightly-build/2026-11-23",
+      "draft": false,
+      "assets": [
+        {
+          "name": "nightly-2026-11-23.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/0-nightly-build/2026-11-23/nightly-2026-11-23.7z",
+          "size": 2059514,
+          "digest": "sha256:be4bdd9cb3f03ebdc06ec6ffaaab63acce941515bca53d95bfd9d5f791db4114"
+        }
+      ]
+    },
+    {
+      "tag_name": "0-nightly-build/2026-11-22",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/0-nightly-build/2026-11-22",
+      "draft": false,
+      "assets": [
+        {
+          "name": "nightly-2026-11-22.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/0-nightly-build/2026-11-22/nightly-2026-11-22.7z",
+          "size": 2041419,
+          "digest": "sha256:cbb3410f503e8b1a2327dcc70a2a11d5d08e4c40609117870fb6cdab7033832d"
+        }
+      ]
+    },
+    {
+      "tag_name": "0-nightly-build/2026-11-21",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/0-nightly-build/2026-11-21",
+      "draft": false,
+      "assets": [
+        {
+          "name": "nightly-2026-11-21.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/0-nightly-build/2026-11-21/nightly-2026-11-21.7z",
+          "size": 2041355,
+          "digest": "sha256:4d609c4ac3777d1090285018de026607f76ed0e30a6317c5f294ff71eec9d759"
+        }
+      ]
+    },
+    {
+      "tag_name": "0-nightly-build/2026-11-20",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/0-nightly-build/2026-11-20",
+      "draft": false,
+      "assets": [
+        {
+          "name": "nightly-2026-11-20.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/0-nightly-build/2026-11-20/nightly-2026-11-20.7z",
+          "size": 2041475,
+          "digest": "sha256:974fe41654b5521b90066666a6cc41417d5d85d7e84c8e9a6dcdf17928c5c5d4"
+        }
+      ]
+    },
+    {
+      "tag_name": "0-nightly-build/2026-11-19",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/0-nightly-build/2026-11-19",
+      "draft": false,
+      "assets": [
+        {
+          "name": "nightly-2026-11-19.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/0-nightly-build/2026-11-19/nightly-2026-11-19.7z",
+          "size": 2041489,
+          "digest": "sha256:6c513f5b0f4b1b3ce34dd5800bc9be528c81a635e5615563618c0900bd12cd87"
+        }
+      ]
+    },
+    {
+      "tag_name": "0-nightly-build/2026-11-18",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/0-nightly-build/2026-11-18",
+      "draft": false,
+      "assets": [
+        {
+          "name": "nightly-2026-11-18.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/0-nightly-build/2026-11-18/nightly-2026-11-18.7z",
+          "size": 2041524,
+          "digest": "sha256:4e906d36fad569b1415155822872a82168695ae054c9855455eca6dfc20c6a54"
+        }
+      ]
+    },
+    {
+      "tag_name": "v2.9.0",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/v2.9.0",
+      "draft": false,
+      "assets": [
+        {
+          "name": "v2.9.0.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/v2.9.0/v2.9.0.7z",
+          "size": 2075805,
+          "digest": "sha256:64be3f805faf465f76088f13aa52b21cb6cfacbea1520f3f559d49c5945e9f0e"
+        }
+      ]
+    },
+    {
+      "tag_name": "2.8.4",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.8.4",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.8.4.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.8.4/2.8.4.7z",
+          "size": 2495965,
+          "digest": "sha256:b07ea4d0bebc8fc9b4809f9f88310939e7af5384a495af46d104630cb14ce72a"
+        }
+      ]
+    },
+    {
+      "tag_name": "2.8.1",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.8.1",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.8.1.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.8.1/2.8.1.7z",
+          "size": 2492963,
+          "digest": "sha256:8415302bd7dfdf25de473cf1566133df63435a25ddac894b79f2c31d1556bc99"
+        }
+      ]
+    },
+    {
+      "tag_name": "2.8.0",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.8.0",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.8.0.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.8.0/2.8.0.7z",
+          "size": 2474933,
+          "digest": "sha256:350d5a218b951da77cb1f148afdf27737cb2ac4c633e2bf584bf202d7d6d3feb"
+        }
+      ]
+    },
+    {
+      "tag_name": "2.8.0-rc-2",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.8.0-rc-2",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.8.0-rc-2.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.8.0-rc-2/2.8.0-rc-2.7z",
+          "size": 2478722,
+          "digest": "sha256:e55763003aaa5b5324fca55e4ac435ee046f3fcd04d97425a8e044bbd133bb10"
+        }
+      ]
+    },
+    {
+      "tag_name": "2.8.0-beta-4",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.8.0-beta-4",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.8.0-beta-4.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.8.0-beta-4/2.8.0-beta-4.7z",
+          "size": 2470527,
+          "digest": "sha256:20579dbc824d0086dbb93f12280521fb2b6ae29dfce8cf77c6588f35357125fe"
+        }
+      ]
+    },
+    {
+      "tag_name": "2.8.0-beta-2",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.8.0-beta-2",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.8.0-beta-2.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.8.0-beta-2/2.8.0-beta-2.7z",
+          "size": 2443321,
+          "digest": "sha256:02e90e922e159c1c7efa8700cdc20a0d1001b107df5797153016a6fc27a62448"
+        }
+      ]
+    },
+    {
+      "tag_name": "2.8.0-beta-1",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.8.0-beta-1",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.8.0-beta-1.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.8.0-beta-1/2.8.0-beta-1.7z",
+          "size": 2436310,
+          "digest": "sha256:306cf1afb2b30d35420b328d89021d13992b7f81c324d72d12831e147d6ee247"
+        }
+      ]
+    },
+    {
+      "tag_name": "2.7.4",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.7.4",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.7.4.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.7.4/2.7.4.7z",
+          "size": 2391644,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.7.3",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.7.3",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.7.3.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.7.3/2.7.3.7z",
+          "size": 2390828,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.7.2.v2",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.7.2.v2",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.7.2.v2.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.7.2.v2/2.7.2.v2.7z",
+          "size": 2386107,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.7.2",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.7.2",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.7.2.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.7.2/2.7.2.7z",
+          "size": 2385360,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.7.0-beta-1",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.7.0-beta-1",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.7.0-beta-1.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.7.0-beta-1/2.7.0-beta-1.7z",
+          "size": 2364727,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.6.0",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.6.0",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.6.0.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.6.0/2.6.0.7z",
+          "size": 2291801,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.5.1",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.5.1",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.5.1.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.5.1/2.5.1.7z",
+          "size": 2241272,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.5.0",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.5.0",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.5.0.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.5.0/2.5.0.7z",
+          "size": 2238397,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.4.1.V2",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.4.1.V2",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.4.1.V2.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.4.1.V2/2.4.1.V2.7z",
+          "size": 2228014,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.4.0",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.4.0",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.4.0.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.4.0/2.4.0.7z",
+          "size": 2234080,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.3.5",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.3.5",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.3.5.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.3.5/2.3.5.7z",
+          "size": 2230703,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "test",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/test",
+      "draft": false,
+      "assets": [
+        {
+          "name": "280pre.mods.zip",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/test/280pre.mods.zip",
+          "size": 415955539,
+          "digest": "sha256:f51a9994f4d53084e12ec11b28a1c36cb1bc93b32f8b2cf5949248fd78100a57"
+        }
+      ]
+    },
+    {
+      "tag_name": "2.3.4",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.3.4",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.3.4_complete.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.3.4/2.3.4_complete.7z",
+          "size": 2359481,
+          "digest": null
+        },
+        {
+          "name": "2.3.4_normal.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.3.4/2.3.4_normal.7z",
+          "size": 2208995,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.3.3",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.3.3",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.3.3_complete.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.3.3/2.3.3_complete.7z",
+          "size": 2341458,
+          "digest": null
+        },
+        {
+          "name": "2.3.3_normal.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.3.3/2.3.3_normal.7z",
+          "size": 2190942,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.3.2",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.3.2",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.3.2_complete.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.3.2/2.3.2_complete.7z",
+          "size": 4132145,
+          "digest": null
+        },
+        {
+          "name": "2.3.2_normal.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.3.2/2.3.2_normal.7z",
+          "size": 4095535,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.3.1",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.3.1",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.3.1_complete.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.3.1/2.3.1_complete.7z",
+          "size": 4733551,
+          "digest": null
+        },
+        {
+          "name": "2.3.1_normal.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.3.1/2.3.1_normal.7z",
+          "size": 4554462,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.3.0",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.3.0",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.3.0_complete.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.3.0/2.3.0_complete.7z",
+          "size": 2532347,
+          "digest": null
+        },
+        {
+          "name": "2.3.0_normal.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.3.0/2.3.0_normal.7z",
+          "size": 2353969,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.2.10",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.2.10",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.2.10_complete.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.2.10/2.2.10_complete.7z",
+          "size": 2434417,
+          "digest": null
+        },
+        {
+          "name": "2.2.10_normal.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.2.10/2.2.10_normal.7z",
+          "size": 2255264,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.2.8-pre.V3",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.2.8-pre.V3",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.2.8-pre.V3_complete.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.2.8-pre.V3/2.2.8-pre.V3_complete.7z",
+          "size": 2509506,
+          "digest": null
+        },
+        {
+          "name": "2.2.8-pre.V3_normal.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.2.8-pre.V3/2.2.8-pre.V3_normal.7z",
+          "size": 2329810,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.2.0.0.V3",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.2.0.0.V3",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.2.0.0.V3_complete.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.2.0.0.V3/2.2.0.0.V3_complete.7z",
+          "size": 2476239,
+          "digest": null
+        },
+        {
+          "name": "2.2.0.0.V3_normal.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.2.0.0.V3/2.2.0.0.V3_normal.7z",
+          "size": 2296816,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.1.2.4-29-pre",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.1.2.4-29-pre",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.1.2.4-29-pre_complete.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.1.2.4-29-pre/2.1.2.4-29-pre_complete.7z",
+          "size": 2318595,
+          "digest": null
+        },
+        {
+          "name": "2.1.2.4-29-pre_normal.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.1.2.4-29-pre/2.1.2.4-29-pre_normal.7z",
+          "size": 2141521,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.1.2.4-dev-pre-test-5.V2",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.1.2.4-dev-pre-test-5.V2",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.1.2.4-dev-pre-test-5.V2_complete.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.1.2.4-dev-pre-test-5.V2/2.1.2.4-dev-pre-test-5.V2_complete.7z",
+          "size": 2241333,
+          "digest": null
+        },
+        {
+          "name": "2.1.2.4-dev-pre-test-5.V2_normal.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.1.2.4-dev-pre-test-5.V2/2.1.2.4-dev-pre-test-5.V2_normal.7z",
+          "size": 2073576,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.1.2.3QF.V4",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.1.2.3QF.V4",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.1.2.3QF_complete.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.1.2.3QF.V4/2.1.2.3QF_complete.7z",
+          "size": 3067226,
+          "digest": null
+        },
+        {
+          "name": "2.1.2.3QF_normal.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.1.2.3QF.V4/2.1.2.3QF_normal.7z",
+          "size": 2896848,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.1.2.2QF2",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.1.2.2QF2",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.1.2.2QF2_complete.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.1.2.2QF2/2.1.2.2QF2_complete.7z",
+          "size": 2998756,
+          "digest": null
+        },
+        {
+          "name": "2.1.2.2QF2_normal.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.1.2.2QF2/2.1.2.2QF2_normal.7z",
+          "size": 2835313,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.1.2.1.V2",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.1.2.1.V2",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.1.2.1_complete.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.1.2.1.V2/2.1.2.1_complete.7z",
+          "size": 2987393,
+          "digest": null
+        },
+        {
+          "name": "2.1.2.1_normal.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.1.2.1.V2/2.1.2.1_normal.7z",
+          "size": 2820754,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.1.2.0-pre5",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.1.2.0-pre5",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.1.2.0-pre5.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.1.2.0-pre5/2.1.2.0-pre5.7z",
+          "size": 1222508,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.1.1.5",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.1.1.5",
+      "draft": false,
+      "assets": [
+        {
+          "name": "pre.2.1.1.5-dev.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.1.1.5/pre.2.1.1.5-dev.7z",
+          "size": 1237589,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.1.1.4QF-2.V3",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.1.1.4QF-2.V3",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.1.1.4QF-2_complete.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.1.1.4QF-2.V3/2.1.1.4QF-2_complete.7z",
+          "size": 2968898,
+          "digest": null
+        },
+        {
+          "name": "2.1.1.4QF-2_normal.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.1.1.4QF-2.V3/2.1.1.4QF-2_normal.7z",
+          "size": 2802264,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.1.1.3",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.1.1.3",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.1.1.3_complete.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.1.1.3/2.1.1.3_complete.7z",
+          "size": 2946880,
+          "digest": null
+        },
+        {
+          "name": "2.1.1.3_normal.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.1.1.3/2.1.1.3_normal.7z",
+          "size": 2780553,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.1.1.2",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.1.1.2",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.1.1.2_complete.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.1.1.2/2.1.1.2_complete.7z",
+          "size": 2938128,
+          "digest": null
+        },
+        {
+          "name": "2.1.1.2_normal.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.1.1.2/2.1.1.2_normal.7z",
+          "size": 2771234,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.1.1.1a.V3",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.1.1.1a.V3",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.1.1.1a_complete.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.1.1.1a.V3/2.1.1.1a_complete.7z",
+          "size": 3088410,
+          "digest": null
+        },
+        {
+          "name": "2.1.1.1a_NewElementPatch.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.1.1.1a.V3/2.1.1.1a_NewElementPatch.7z",
+          "size": 2668469,
+          "digest": null
+        },
+        {
+          "name": "2.1.1.1a_normal.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.1.1.1a.V3/2.1.1.1a_normal.7z",
+          "size": 2912570,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.1.1.0.V2",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.1.1.0.V2",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.1.1.0_complete.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.1.1.0.V2/2.1.1.0_complete.7z",
+          "size": 2904459,
+          "digest": null
+        },
+        {
+          "name": "2.1.1.0_normal.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.1.1.0.V2/2.1.1.0_normal.7z",
+          "size": 2738080,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.1.0.7a",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.1.0.7a",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.1.0.7a_QuestBook.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.1.0.7a/2.1.0.7a_QuestBook.7z",
+          "size": 824056,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.1.0.6b",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.1.0.6b",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.1.0.6b_QuestBook.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.1.0.6b/2.1.0.6b_QuestBook.7z",
+          "size": 814562,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.1.0.5V2",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.1.0.5V2",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.1.0.5_QuestBook.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.1.0.5V2/2.1.0.5_QuestBook.7z",
+          "size": 876506,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.1.0.4V2",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.1.0.4V2",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.1.0.4_complete.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.1.0.4V2/2.1.0.4_complete.7z",
+          "size": 2833693,
+          "digest": null
+        },
+        {
+          "name": "2.1.0.4_normal.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.1.0.4V2/2.1.0.4_normal.7z",
+          "size": 2667694,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.1.0.3a.V3",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.1.0.3a.V3",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.1.0.3a_complete.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.1.0.3a.V3/2.1.0.3a_complete.7z",
+          "size": 5307084,
+          "digest": null
+        },
+        {
+          "name": "2.1.0.3a_normal.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.1.0.3a.V3/2.1.0.3a_normal.7z",
+          "size": 5141321,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.1.0.0.V3",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.1.0.0.V3",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.1.0.0_complete.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.1.0.0.V3/2.1.0.0_complete.7z",
+          "size": 2818915,
+          "digest": null
+        },
+        {
+          "name": "2.1.0.0_normal.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.1.0.0.V3/2.1.0.0_normal.7z",
+          "size": 2653094,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.0.9.4a.dev.V2",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.0.9.4a.dev.V2",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.0.9.4a.dev_complete.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.9.4a.dev.V2/2.0.9.4a.dev_complete.7z",
+          "size": 2957576,
+          "digest": null
+        },
+        {
+          "name": "2.0.9.4a.dev_normal.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.9.4a.dev.V2/2.0.9.4a.dev_normal.7z",
+          "size": 2780222,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.0.9.1a.dev",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.0.9.1a.dev",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.0.9.1a.dev_complete.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.9.1a.dev/2.0.9.1a.dev_complete.7z",
+          "size": 2854881,
+          "digest": null
+        },
+        {
+          "name": "2.0.9.1a.dev_normal.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.9.1a.dev/2.0.9.1a.dev_normal.7z",
+          "size": 2685104,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.0.9.1.dev",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.0.9.1.dev",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.0.9.1.dev_complete.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.9.1.dev/2.0.9.1.dev_complete.7z",
+          "size": 2793492,
+          "digest": null
+        },
+        {
+          "name": "2.0.9.1.dev_normal.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.9.1.dev/2.0.9.1.dev_normal.7z",
+          "size": 2623797,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.0.9.0.QF4.V3",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.0.9.0.QF4.V3",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.0.9.0.QF4_complete.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.9.0.QF4.V3/2.0.9.0.QF4_complete.7z",
+          "size": 1812989,
+          "digest": null
+        },
+        {
+          "name": "2.0.9.0.QF4_normal.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.9.0.QF4.V3/2.0.9.0.QF4_normal.7z",
+          "size": 1643614,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.0.9.0.beta2",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.0.9.0.beta2",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.0.9.0.beta2_complete.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.9.0.beta2/2.0.9.0.beta2_complete.7z",
+          "size": 1746736,
+          "digest": null
+        },
+        {
+          "name": "2.0.9.0.beta2_normal.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.9.0.beta2/2.0.9.0.beta2_normal.7z",
+          "size": 1576943,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.0.9.0.pre6.dev",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.0.9.0.pre6.dev",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.0.9.0.pre6.dev_complete.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.9.0.pre6.dev/2.0.9.0.pre6.dev_complete.7z",
+          "size": 1714031,
+          "digest": null
+        },
+        {
+          "name": "2.0.9.0.pre6.dev_normal.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.9.0.pre6.dev/2.0.9.0.pre6.dev_normal.7z",
+          "size": 1544901,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.0.8.9.dev4.V3",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.0.8.9.dev4.V3",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.0.8.9.dev4_complete.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.8.9.dev4.V3/2.0.8.9.dev4_complete.7z",
+          "size": 1707099,
+          "digest": null
+        },
+        {
+          "name": "2.0.8.9.dev4_normal.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.8.9.dev4.V3/2.0.8.9.dev4_normal.7z",
+          "size": 1537640,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.0.8.8",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.0.8.8",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.0.8.8_complete.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.8.8/2.0.8.8_complete.7z",
+          "size": 1697426,
+          "digest": null
+        },
+        {
+          "name": "2.0.8.8_normal.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.8.8/2.0.8.8_normal.7z",
+          "size": 1529424,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.0.8.7",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.0.8.7",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.0.8.7_complete.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.8.7/2.0.8.7_complete.7z",
+          "size": 1691578,
+          "digest": null
+        },
+        {
+          "name": "2.0.8.7_normal.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.8.7/2.0.8.7_normal.7z",
+          "size": 1523463,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.0.8.5",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.0.8.5",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.0.8.5_complete.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.8.5/2.0.8.5_complete.7z",
+          "size": 1686341,
+          "digest": null
+        },
+        {
+          "name": "2.0.8.5_normal.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.8.5/2.0.8.5_normal.7z",
+          "size": 1519532,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.0.8.4QF",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.0.8.4QF",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.0.8.4_complete.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.8.4QF/2.0.8.4_complete.7z",
+          "size": 1519704,
+          "digest": null
+        },
+        {
+          "name": "2.0.8.4_normal.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.8.4QF/2.0.8.4_normal.7z",
+          "size": 1352986,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.0.8.3V3",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.0.8.3V3",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.0.8.3_complete.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.8.3V3/2.0.8.3_complete.7z",
+          "size": 1513947,
+          "digest": null
+        },
+        {
+          "name": "2.0.8.3_normal.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.8.3V3/2.0.8.3_normal.7z",
+          "size": 1338441,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.0.8.2V2",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.0.8.2V2",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.0.8.2_complete.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.8.2V2/2.0.8.2_complete.7z",
+          "size": 1527404,
+          "digest": null
+        },
+        {
+          "name": "2.0.8.2_normal.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.8.2V2/2.0.8.2_normal.7z",
+          "size": 1351851,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.0.8.1",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.0.8.1",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.0.8.1_complete.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.8.1/2.0.8.1_complete.7z",
+          "size": 1526422,
+          "digest": null
+        },
+        {
+          "name": "2.0.8.1_normal.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.8.1/2.0.8.1_normal.7z",
+          "size": 1350534,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "5.09.3xV2",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/5.09.3xV2",
+      "draft": false,
+      "assets": []
+    },
+    {
+      "tag_name": "2.0.8.0pre",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.0.8.0pre",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.0.8.0_complete.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.8.0pre/2.0.8.0_complete.7z",
+          "size": 1515929,
+          "digest": null
+        },
+        {
+          "name": "2.0.8.0_normal.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.8.0pre/2.0.8.0_normal.7z",
+          "size": 1340325,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.0.7.5V2",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.0.7.5V2",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.0.7.5_complete.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.7.5V2/2.0.7.5_complete.7z",
+          "size": 1412010,
+          "digest": null
+        },
+        {
+          "name": "2.0.7.5_normal.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.7.5V2/2.0.7.5_normal.7z",
+          "size": 1238823,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.0.7.0.V3",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.0.7.0.V3",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.0.7.0_complete.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.7.0.V3/2.0.7.0_complete.7z",
+          "size": 1297485,
+          "digest": null
+        },
+        {
+          "name": "2.0.7.0_normal.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.7.0.V3/2.0.7.0_normal.7z",
+          "size": 1125009,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.0.6.8V4",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.0.6.8V4",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.0.6.8_complete.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.6.8V4/2.0.6.8_complete.7z",
+          "size": 1287875,
+          "digest": null
+        },
+        {
+          "name": "2.0.6.8_normal.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.6.8V4/2.0.6.8_normal.7z",
+          "size": 1115179,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.0.6.2.V7",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.0.6.2.V7",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.0.6.2_complete.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.6.2.V7/2.0.6.2_complete.7z",
+          "size": 1260680,
+          "digest": null
+        },
+        {
+          "name": "2.0.6.2_normal.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.6.2.V7/2.0.6.2_normal.7z",
+          "size": 1088017,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.0.6.0.V7",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.0.6.0.V7",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.0.6.0_complete.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.6.0.V7/2.0.6.0_complete.7z",
+          "size": 1257522,
+          "digest": null
+        },
+        {
+          "name": "2.0.6.0_normal.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.6.0.V7/2.0.6.0_normal.7z",
+          "size": 1085401,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.0.5.1.V7",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.0.5.1.V7",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.0.5.1_complete.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.5.1.V7/2.0.5.1_complete.7z",
+          "size": 1237502,
+          "digest": null
+        },
+        {
+          "name": "2.0.5.1_normal.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.5.1.V7/2.0.5.1_normal.7z",
+          "size": 1065129,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.0.4.9.V7",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.0.4.9.V7",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.0.4.9_complete.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.4.9.V7/2.0.4.9_complete.7z",
+          "size": 1235753,
+          "digest": null
+        },
+        {
+          "name": "2.0.4.9_normal.7z",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.4.9.V7/2.0.4.9_normal.7z",
+          "size": 1064474,
+          "digest": null
+        }
+      ]
+    },
+    {
+      "tag_name": "2.0.7.4dev",
+      "html_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/tag/2.0.7.4dev",
+      "draft": false,
+      "assets": [
+        {
+          "name": "2.0.7.4_complete.zip",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.7.4dev/2.0.7.4_complete.zip",
+          "size": 2075063,
+          "digest": null
+        },
+        {
+          "name": "2.0.7.4_normal.zip",
+          "browser_download_url": "https://github.com/Kiwi233/Translation-of-GTNH/releases/download/2.0.7.4dev/2.0.7.4_normal.zip",
+          "size": 1828728,
+          "digest": null
+        }
+      ]
+    }
+  ]
+}

@@ -8,6 +8,8 @@ try { $code = $reader.ReadToEnd() } finally { $reader.Dispose() }
 $errors = $null
 $ast = [Management.Automation.Language.Parser]::ParseInput($code,[ref]$null,[ref]$errors)
 if ($errors.Count) { throw $errors[0].Message }
+$assetAssignment = $ast.Find({param($n) $n -is [Management.Automation.Language.AssignmentStatementAst] -and $n.Left.Extent.Text -eq '$script:GtnhBundledAssets'},$true)
+if ($assetAssignment) { . ([scriptblock]::Create($assetAssignment.Extent.Text)) }
 foreach ($function in $ast.FindAll({ param($n) $n -is [Management.Automation.Language.FunctionDefinitionAst] },$true)) {
     . ([scriptblock]::Create($function.Extent.Text))
 }

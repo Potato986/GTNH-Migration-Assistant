@@ -8,6 +8,9 @@ $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 [Windows.Forms.Application]::EnableVisualStyles()
+if (!(Get-Command Set-GtnhWindowTheme -ErrorAction SilentlyContinue)) {
+    . (Join-Path $PSScriptRoot 'Themes.ps1')
+}
 if (!(Get-Command Select-TranslationAsset -ErrorAction SilentlyContinue)) {
     . (Join-Path $PSScriptRoot 'Translation.ps1')
 }
@@ -117,13 +120,16 @@ function Write-Config($path, $before, $after) {
 function Select-GtnhDirectory($title, $known, $exclude) {
     $window = [Windows.Forms.Form]::new()
     $window.Text = $title
-    $window.ClientSize = [Drawing.Size]::new(780,300)
+    $window.ClientSize = [Drawing.Size]::new(900,480)
     $window.StartPosition = 'CenterScreen'
-    $paths = [Windows.Forms.ListBox]::new()
+    $paths = [Windows.Forms.ListView]::new()
+    $paths.View = 'Details'
+    [void]$paths.Columns.Add('实例名称',290)
+    [void]$paths.Columns.Add('游戏目录',570)
+    $paths.MultiSelect = $false
     $paths.Dock = 'Fill'
-    $paths.HorizontalScrollbar = $true
     foreach ($path in ($known | Sort-Object)) {
-        if ($path -ne $exclude) { [void]$paths.Items.Add($path) }
+        if ($path -ne $exclude) { Add-GtnhInstanceRow $paths $path }
     }
     $bar = [Windows.Forms.FlowLayoutPanel]::new()
     $bar.Dock = 'Bottom'
@@ -136,8 +142,8 @@ function Select-GtnhDirectory($title, $known, $exclude) {
     }
     $ok,$browse,$scan = $bar.Controls
     $ok.Enabled = $false
-    $paths.Add_SelectedIndexChanged({ $ok.Enabled = $paths.SelectedIndex -ge 0 })
-    $ok.Add_Click({ $window.Tag = $paths.SelectedItem; $window.DialogResult = 'OK' })
+    $paths.Add_SelectedIndexChanged({ $ok.Enabled = $paths.SelectedItems.Count -eq 1 })
+    $ok.Add_Click({ $window.Tag = $paths.SelectedItems[0].Tag; $window.DialogResult = 'OK' })
     $paths.Add_DoubleClick({ $ok.PerformClick() })
     $browse.Add_Click({
         $chosen = Pick-Instance $title
@@ -165,7 +171,7 @@ function Select-GtnhDirectory($title, $known, $exclude) {
             if ([IO.Path]::GetFileName($dir) -ieq 'mods') {
                 $game = [IO.Path]::GetDirectoryName($dir)
                 if ((Test-GtnhDirectory $game) -and $known.Add($game) -and $game -ne $exclude) {
-                    [void]$paths.Items.Add($game)
+                    Add-GtnhInstanceRow $paths $game
                 }
                 continue
             }
@@ -180,8 +186,19 @@ function Select-GtnhDirectory($title, $known, $exclude) {
     $window.AcceptButton = $ok
     $window.Controls.Add($paths)
     $window.Controls.Add($bar)
+    [void](Add-GtnhDialogHeader $window '选择 GTNH 实例' $title)
+    Set-GtnhWindowTheme $window 'instance-scene.png'
     try { if ($window.ShowDialog() -eq 'OK') { return [string]$window.Tag } }
     finally { $timer.Stop(); $timer.Dispose(); $window.Dispose() }
+}
+
+function Add-GtnhInstanceRow($view,$path) {
+    $item = Get-Item -LiteralPath $path
+    $caption = if ($item.Name -in '.minecraft','minecraft') { $item.Parent.Name } else { $item.Name }
+    $row = [Windows.Forms.ListViewItem]::new($caption)
+    [void]$row.SubItems.Add($path)
+    $row.Tag = $path
+    [void]$view.Items.Add($row)
 }
 
 function Test-GtnhDirectory($game) {
@@ -216,7 +233,7 @@ if (($src + '\').StartsWith($dst + '\', 'OrdinalIgnoreCase') -or
 }
 
 $form = New-Object Windows.Forms.Form
-$form.Text = 'GTNH 迁移助手 v0.2'
+$form.Text = 'GTNH 迁移助手 v0.3'
 $form.Size = New-Object Drawing.Size(920, 640)
 $form.StartPosition = 'CenterScreen'
 $form.Font = [Drawing.Font]::new('Microsoft YaHei UI',10)
@@ -889,6 +906,8 @@ $translationVersion.Width = 280
 $translationVersion.AutoEllipsis = $true
 $translationVersion.Height = 30
 $translationVersion.TextAlign = 'MiddleLeft'
+$translationVersion.ForeColor = [Drawing.Color]::White
+$translationVersion.BackColor = [Drawing.Color]::FromArgb(34,43,44)
 $translationChoose = [Windows.Forms.Button]::new()
 $translationChoose.Text = '选择汉化版本'
 $translationChoose.AutoSize = $true
@@ -902,7 +921,7 @@ $layout.RowStyles[2].Height = 40
 $layout.Controls.Add($translationBar,0,2)
 $translationState = @{ Asset=$null }
 $translationChoose.Add_Click({
-    $asset = Select-TranslationAsset $form
+    $asset = Select-TranslationAsset $form $dst
     if ($asset) {
         $translationState.Asset = $asset
         $translationVersion.Text = $asset.Label
@@ -911,6 +930,7 @@ $translationChoose.Add_Click({
     }
 })
 $translationCheck.Add_CheckedChanged({ & $refreshCount })
+Set-GtnhControlTheme $translationBar
 
 $button.Add_Click({
     $checkedRows = @(foreach ($row in $list.Items) { if ($row.Checked) { $row } })
