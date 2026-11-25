@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    tags: ['v0.1']
+    tags: ['v*']
 
 permissions:
   contents: read
@@ -24,9 +24,10 @@ jobs:
 
       - name: Test migration and backup recovery
         run: |
-          $exe = (Resolve-Path 'dist/GTNH-Migration-Assistant-v0.1-Windows.exe').Path
+          $exe = (Resolve-Path 'dist/GTNH-Migration-Assistant-v0.2-Windows.exe').Path
           $before = (Get-FileHash -LiteralPath $exe -Algorithm SHA256).Hash
           .\tests\Test-Portable.ps1 -ExePath $exe
+          .\tests\Test-Features.ps1 -ExePath $exe
           $after = (Get-FileHash -LiteralPath $exe -Algorithm SHA256).Hash
           if ($before -ne $after) { throw 'The executable changed during testing.' }
           "$after  $([IO.Path]::GetFileName($exe))" |
@@ -36,17 +37,18 @@ jobs:
         with:
           name: windows-portable
           path: |
-            dist/GTNH-Migration-Assistant-v0.1-Windows.exe
-            dist/GTNH-Migration-Assistant-v0.1-Windows.exe.sha256
+            dist/GTNH-Migration-Assistant-v0.2-Windows.exe
+            dist/GTNH-Migration-Assistant-v0.2-Windows.exe.sha256
           if-no-files-found: error
 
   release:
     needs: build
-    if: github.event_name == 'push' && github.ref == 'refs/tags/v0.1'
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
+      - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
           name: windows-portable
@@ -57,8 +59,8 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          sha256sum --check GTNH-Migration-Assistant-v0.1-Windows.exe.sha256
+          sha256sum --check *.sha256
           gh release create "$GITHUB_REF_NAME" *.exe *.sha256 \
-            --repo "$GITHUB_REPOSITORY" --verify-tag --prerelease \
-            --title "GTNH 迁移助手 v0.1 测试版" \
-            --notes "Windows 用户请下载 EXE，双击后选择旧实例和新实例。"
+            --repo "$GITHUB_REPOSITORY" --verify-tag --latest \
+            --title "GTNH 迁移助手 $GITHUB_REF_NAME" \
+            --notes-file ../release-notes.md

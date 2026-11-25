@@ -1,11 +1,13 @@
 ﻿$ErrorActionPreference = 'Stop'
-$source = Join-Path $PSScriptRoot 'GTNH-Migrate.ps1'
+$main = Join-Path $PSScriptRoot 'GTNH-Migrate.ps1'
+$translation = Join-Path $PSScriptRoot 'Translation.ps1'
+$dist = [IO.Directory]::CreateDirectory((Join-Path $PSScriptRoot 'dist')).FullName
+$source = Join-Path $dist 'GTNH-Migrate-bundled.ps1'
+[IO.File]::WriteAllText($source, ([IO.File]::ReadAllText($translation) + "`r`n" + [IO.File]::ReadAllText($main)), [Text.UTF8Encoding]::new($true))
 $errors = $null
 [void][Management.Automation.Language.Parser]::ParseFile($source, [ref]$null, [ref]$errors)
 if ($errors.Count) { throw ($errors.Message -join "`n") }
-
-$dist = [IO.Directory]::CreateDirectory((Join-Path $PSScriptRoot 'dist')).FullName
-$exe = Join-Path $dist 'GTNH-Migration-Assistant-v0.1-Windows.exe'
+$exe = Join-Path $dist 'GTNH-Migration-Assistant-v0.2-Windows.exe'
 $launcher = @"
 using System;
 using System.IO;

@@ -8,6 +8,9 @@ $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 [Windows.Forms.Application]::EnableVisualStyles()
+if (!(Get-Command Select-TranslationAsset -ErrorAction SilentlyContinue)) {
+    . (Join-Path $PSScriptRoot 'Translation.ps1')
+}
 
 function Pick-Instance($title) {
     $dialog = New-Object Windows.Forms.FolderBrowserDialog
@@ -15,7 +18,7 @@ function Pick-Instance($title) {
     try {
         if ($dialog.ShowDialog() -ne 'OK') { return }
         $root = $dialog.SelectedPath
-        foreach ($candidate in @((Join-Path $root '.minecraft'), $root)) {
+        foreach ($candidate in @((Join-Path $root '.minecraft'), (Join-Path $root 'minecraft'), $root)) {
             if (Test-Path -LiteralPath (Join-Path $candidate 'mods') -PathType Container) {
                 return (Get-Item -LiteralPath $candidate).FullName
             }
@@ -94,23 +97,116 @@ function Read-Config($path) {
 }
 
 function Write-Config($path, $before, $after) {
-    if ((Read-Config $path) -cne $before) { throw "配置已变化，请重新扫描：$path" }
+    $create = $null -eq $before
+    if ($create) { Assert-RegularPath (Split-Path $path -Parent) }
+    elseif ((Read-Config $path) -cne $before) { throw "配置已变化，请重新扫描：$path" }
     if ($before -ceq $after) { return }
     $id = [guid]::NewGuid().ToString('N')
     $stage = "$path.$id.tmp"
     $backup = "$path.$id.bak"
     try {
         [IO.File]::WriteAllBytes($stage, $bytes.GetBytes($after))
-        [IO.File]::Replace($stage, $path, $backup)
+        if ($create) { [IO.File]::Move($stage, $path) }
+        else { [IO.File]::Replace($stage, $path, $backup) }
         if ((Read-Config $path) -cne $after) { throw "配置校验失败，备份：$backup" }
     } finally {
         if ([IO.File]::Exists($stage)) { [IO.File]::Delete($stage) }
     }
 }
 
-$src = Pick-Instance '选择旧实例或它的 .minecraft'
+function Select-GtnhDirectory($title, $known, $exclude) {
+    $window = [Windows.Forms.Form]::new()
+    $window.Text = $title
+    $window.ClientSize = [Drawing.Size]::new(780,300)
+    $window.StartPosition = 'CenterScreen'
+    $paths = [Windows.Forms.ListBox]::new()
+    $paths.Dock = 'Fill'
+    $paths.HorizontalScrollbar = $true
+    foreach ($path in ($known | Sort-Object)) {
+        if ($path -ne $exclude) { [void]$paths.Items.Add($path) }
+    }
+    $bar = [Windows.Forms.FlowLayoutPanel]::new()
+    $bar.Dock = 'Bottom'
+    $bar.Height = 40
+    foreach ($caption in '选择此实例','手动选择目录','搜索所有本地磁盘') {
+        $button = [Windows.Forms.Button]::new()
+        $button.AutoSize = $true
+        $button.Text = $caption
+        $bar.Controls.Add($button)
+    }
+    $ok,$browse,$scan = $bar.Controls
+    $ok.Enabled = $false
+    $paths.Add_SelectedIndexChanged({ $ok.Enabled = $paths.SelectedIndex -ge 0 })
+    $ok.Add_Click({ $window.Tag = $paths.SelectedItem; $window.DialogResult = 'OK' })
+    $paths.Add_DoubleClick({ $ok.PerformClick() })
+    $browse.Add_Click({
+        $chosen = Pick-Instance $title
+        if ($chosen -and $chosen -ne $exclude) {
+            [void]$known.Add($chosen)
+            $window.Tag = $chosen
+            $window.DialogResult = 'OK'
+        }
+    })
+    $pending = [Collections.Generic.Queue[string]]::new()
+    $timer = [Windows.Forms.Timer]::new()
+    $timer.Interval = 25
+    $scan.Add_Click({
+        if ($timer.Enabled) { $timer.Stop(); $pending.Clear(); $scan.Text = '搜索所有本地磁盘'; return }
+        foreach ($drive in [IO.DriveInfo]::GetDrives()) {
+            if ($drive.IsReady -and $drive.DriveType -in 'Fixed','Removable') { $pending.Enqueue($drive.RootDirectory.FullName) }
+        }
+        $scan.Text = '停止搜索'
+        $timer.Start()
+    })
+    $timer.Add_Tick({
+        $budget = [Diagnostics.Stopwatch]::StartNew()
+        while ($pending.Count -and $budget.ElapsedMilliseconds -lt 40) {
+            $dir = $pending.Dequeue()
+            if ([IO.Path]::GetFileName($dir) -ieq 'mods') {
+                $game = [IO.Path]::GetDirectoryName($dir)
+                if ((Test-GtnhDirectory $game) -and $known.Add($game) -and $game -ne $exclude) {
+                    [void]$paths.Items.Add($game)
+                }
+                continue
+            }
+            try {
+                foreach ($sub in [IO.DirectoryInfo]::new($dir).GetDirectories()) {
+                    if (!($sub.Attributes -band [IO.FileAttributes]::ReparsePoint)) { $pending.Enqueue($sub.FullName) }
+                }
+            } catch [UnauthorizedAccessException] {} catch [IO.IOException] {} catch [System.Security.SecurityException] {}
+        }
+        if (!$pending.Count) { $timer.Stop(); $scan.Text = '重新搜索本地磁盘' }
+    })
+    $window.AcceptButton = $ok
+    $window.Controls.Add($paths)
+    $window.Controls.Add($bar)
+    try { if ($window.ShowDialog() -eq 'OK') { return [string]$window.Tag } }
+    finally { $timer.Stop(); $timer.Dispose(); $window.Dispose() }
+}
+
+function Test-GtnhDirectory($game) {
+    $mods = Join-Path $game 'mods'
+    if (![IO.Directory]::Exists($mods)) { return $false }
+    try { return [IO.Directory]::GetFiles($mods,'GTNewHorizonsCoreMod*.jar').Length -gt 0 }
+    catch [UnauthorizedAccessException] { return $false } catch [IO.IOException] { return $false }
+}
+
+$knownInstances = [Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
+$roots = @((Get-Location).Path, (Split-Path $PSScriptRoot -Parent), "$env:APPDATA\PrismLauncher\instances",
+    "$env:APPDATA\MultiMC\instances", "$env:USERPROFILE\curseforge\minecraft\Instances")
+foreach ($drive in [IO.DriveInfo]::GetDrives()) {
+    if ($drive.IsReady -and $drive.DriveType -eq 'Fixed') { $roots += Join-Path $drive.RootDirectory.FullName 'Prism\instances' }
+}
+foreach ($root in ($roots | Sort-Object -Unique)) {
+    foreach ($instance in Get-ChildItem -LiteralPath $root -Directory -ErrorAction SilentlyContinue) {
+        foreach ($game in $instance.FullName,"$($instance.FullName)\.minecraft","$($instance.FullName)\minecraft") {
+            if (Test-GtnhDirectory $game) { [void]$knownInstances.Add($game) }
+        }
+    }
+}
+$src = Select-GtnhDirectory '选择旧 GTNH 实例（来源）' $knownInstances $null
 if (!$src) { return }
-$dst = Pick-Instance '选择新实例或它的 .minecraft'
+$dst = Select-GtnhDirectory '选择新 GTNH 实例（目标）' $knownInstances $src
 if (!$dst) { return }
 Assert-RegularPath $src
 Assert-RegularPath $dst
@@ -120,7 +216,7 @@ if (($src + '\').StartsWith($dst + '\', 'OrdinalIgnoreCase') -or
 }
 
 $form = New-Object Windows.Forms.Form
-$form.Text = 'GTNH 迁移助手 · 本地预览版'
+$form.Text = 'GTNH 迁移助手 v0.2'
 $form.Size = New-Object Drawing.Size(920, 640)
 $form.StartPosition = 'CenterScreen'
 $form.Font = [Drawing.Font]::new('Microsoft YaHei UI',10)
@@ -602,14 +698,23 @@ function Index-Settings($text, $regex) {
 function Add-Settings($relative, $regex, $allowed) {
     $source = Join-Path $src $relative
     $target = Join-Path $dst $relative
-    if (![IO.File]::Exists($source) -or ![IO.File]::Exists($target)) { return }
-    $before = Read-Config $target
+    if (![IO.File]::Exists($source)) { return }
+    $before = if ([IO.File]::Exists($target)) { Read-Config $target }
+        elseif ($relative -ne 'options.txt') { return }
     $snapshots[$relative] = $before
     $old = Index-Settings (Read-Config $source) $regex
-    $new = Index-Settings $before $regex
+    $new = Index-Settings ([string]$before) $regex
     foreach ($key in ($old.Keys | Sort-Object)) {
-        if ($key -cnotmatch $allowed -or !$new.ContainsKey($key)) { continue }
+        if ($key -cnotmatch $allowed) { continue }
         $from = $old[$key]
+        if (!$new.ContainsKey($key)) {
+            if ($relative -eq 'options.txt' -and $null -ne $from) {
+                Add-Choice "$relative   $key   未生成 → $($from.Value)" ([pscustomobject]@{
+                    Kind='setting'; File=$relative; AppendKey=$key; Value=$from.Value
+                })
+            }
+            continue
+        }
         $to = $new[$key]
         if ($null -eq $from -or $null -eq $to -or $from.Value -ceq $to.Value) { continue }
         Add-Choice "$relative   $key   $($to.Value) → $($from.Value)" ([pscustomobject]@{
@@ -656,7 +761,9 @@ $packOrderChoice = $null
 try {
     if ($snapshots.ContainsKey('options.txt')) {
         $oldPacks = Read-PackSelection (Read-Config (Join-Path $src 'options.txt'))
-        $newPacks = Read-PackSelection $snapshots['options.txt']
+        $hasPackLine = $snapshots['options.txt'] -match '(?m)^resourcePacks:'
+        $newPacks = if ($hasPackLine) { Read-PackSelection $snapshots['options.txt'] }
+            else { [pscustomobject]@{ Names=@(); Offset=0; Length=0 } }
         $seen = [Collections.Generic.HashSet[string]]::new(
             [StringComparer]::OrdinalIgnoreCase
         )
@@ -675,6 +782,7 @@ try {
                 Length = $newPacks.Length
                 Value = $bytes.GetString([Text.Encoding]::UTF8.GetBytes($json))
                 Packs = $order
+                AppendKey = if (!$hasPackLine) { 'resourcePacks' }
             }
             Add-Choice ("沿用旧实例的资源包顺序   " + ($order -join ' → ')) $packOrderChoice
         }
@@ -757,6 +865,7 @@ $refreshCount = {
         if ($row.Checked) { $count++ }
     }
     if ($shader.SelectedIndex -gt 0) { $count++ }
+    if ($translationCheck -and $translationCheck.Checked) { $count++ }
     $countLabel.Text = "已选 $count 项"
     $button.Enabled = $count -gt 0
 }
@@ -766,16 +875,57 @@ $list.Add_ItemChecked({ & $refreshCount })
 $shader.Add_SelectedIndexChanged({ & $refreshCount })
 & $refreshCount
 
+$translationBar = [Windows.Forms.FlowLayoutPanel]::new()
+$translationBar.Dock = 'Fill'
+$translationBar.WrapContents = $false
+$translationCheck = [Windows.Forms.CheckBox]::new()
+$translationCheck.Text = '覆盖目标汉化'
+$translationCheck.AutoSize = $true
+$translationCheck.Enabled = $false
+$translationVersion = [Windows.Forms.Label]::new()
+$translationVersion.Text = '请选择对应整合包版本的汉化'
+$translationVersion.AutoSize = $false
+$translationVersion.Width = 280
+$translationVersion.AutoEllipsis = $true
+$translationVersion.Height = 30
+$translationVersion.TextAlign = 'MiddleLeft'
+$translationChoose = [Windows.Forms.Button]::new()
+$translationChoose.Text = '选择汉化版本'
+$translationChoose.AutoSize = $true
+$translationLink = [Windows.Forms.LinkLabel]::new()
+$translationLink.Text = '手动下载'
+$translationLink.AutoSize = $true
+$translationLink.Margin = [Windows.Forms.Padding]::new(8,8,0,0)
+$translationLink.Add_LinkClicked({ Start-Process 'https://github.com/Kiwi233/Translation-of-GTNH/releases' })
+$translationBar.Controls.AddRange(@($translationCheck,$translationVersion,$translationChoose,$translationLink))
+$layout.RowStyles[2].Height = 40
+$layout.Controls.Add($translationBar,0,2)
+$translationState = @{ Asset=$null }
+$translationChoose.Add_Click({
+    $asset = Select-TranslationAsset $form
+    if ($asset) {
+        $translationState.Asset = $asset
+        $translationVersion.Text = $asset.Label
+        $translationCheck.Enabled = $true
+        $translationCheck.Checked = $true
+    }
+})
+$translationCheck.Add_CheckedChanged({ & $refreshCount })
+
 $button.Add_Click({
     $checkedRows = @(foreach ($row in $list.Items) { if ($row.Checked) { $row } })
-    if (!$checkedRows.Count -and $shader.SelectedIndex -eq 0) {
+    if (!$checkedRows.Count -and $shader.SelectedIndex -eq 0 -and !$translationCheck.Checked) {
         [void][Windows.Forms.MessageBox]::Show('请勾选要迁移的项目。','迁移清单为空')
         return
     }
     $failed = [Collections.Generic.List[string]]::new()
+    $notes = [Collections.Generic.List[string]]::new()
     $done = 0
     $selected = @($checkedRows | ForEach-Object { $_.Tag })
     $preview = @($checkedRows | ForEach-Object { $_.ToolTipText })
+    if ($translationCheck.Checked) {
+        $preview += "下载并覆盖汉化 $($translationState.Asset.Label)。覆盖前备份目标文件。"
+    }
     try {
         $shaderName = $null
         $restorePacks = $null -ne $packOrderChoice -and $selected -contains $packOrderChoice
@@ -836,7 +986,8 @@ $button.Add_Click({
         foreach ($group in ($selected | Where-Object Kind -eq 'setting' | Group-Object File)) {
             try {
                 $before = $snapshots[$group.Name]
-                $after = $before
+                $after = [string]$before
+                $newline = if ($after.Contains("`n") -and !$after.Contains("`r`n")) { "`n" } else { "`r`n" }
                 $applied = 0
                 foreach ($edit in ($group.Group | Sort-Object Offset -Descending)) {
                     if ($restorePacks -and $edit -eq $packOrderChoice) {
@@ -851,7 +1002,12 @@ $button.Add_Click({
                         }
                     }
                     $applied++
-                    $after = $after.Remove($edit.Offset, $edit.Length).Insert($edit.Offset, $edit.Value)
+                    if ($edit.AppendKey) {
+                        if ($after.Length -gt 0 -and !$after.EndsWith("`n")) { $after += $newline }
+                        $after += $edit.AppendKey + ':' + $edit.Value + $newline
+                    } else {
+                        $after = $after.Remove($edit.Offset, $edit.Length).Insert($edit.Offset, $edit.Value)
+                    }
                 }
                 Write-Config (Join-Path $dst $group.Name) $before $after
                 $done += $applied
@@ -873,7 +1029,20 @@ $button.Add_Click({
                 $done++
             } catch { $failed.Add("启用光影：$($_.Exception.Message)") }
         }
-        $report = @("已完成 $done 项，失败 $($failed.Count) 项。") + @($failed)
+        if ($translationCheck.Checked) {
+            try {
+                $form.Enabled = $false
+                $translationResult = Install-SelectedTranslation $translationState.Asset $dst $form
+                $done++
+                $notes.Add($translationResult)
+            } catch {
+                $translationError = $_.Exception.Message
+                $failed.Add("汉化已跳过：$translationError")
+                $form.Enabled = $true
+                Show-TranslationFailure $form $translationError $translationState.Asset.Page
+            } finally { $form.Enabled = $true }
+        }
+        $report = @("已完成 $done 项，失败或跳过 $($failed.Count) 项。") + @($notes) + @($failed)
         [void][Windows.Forms.MessageBox]::Show(($report -join "`r`n"), '迁移结果')
         $form.Close()
     } catch {
